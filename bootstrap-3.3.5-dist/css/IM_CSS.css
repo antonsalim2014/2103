@@ -1,0 +1,66 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 18 Oct, 2015, 7:46:04 PM
+    Author     : Bernard PC
+*/
+
+
+
+#sidebar {
+    background-color: #FFF;
+    padding:10px;
+    width:200px;
+    height:100%;
+    left:0;
+    position: absolute;
+    float:left;
+}
+
+#sidebar a:hover, a:focus {
+    color: #FFF;
+    text-decoration: none;
+}
+
+#sidebar.nav > li > a,
+#sidebar.nav > li > a:link {
+    // Menu Box colour;
+    background-color: #F71919;
+    color: white;
+}
+
+#sidebar.nav > li > a:hover,
+#sidebar.nav > li > a:focus {
+    background-color: #1b6d85;
+}
+
+#sidebar.nav-pills > li.active > a,
+#sidebar.nav-pills > li.active > a:hover,
+#sidebar.nav-pills > li.active > a:focus {
+    color: #FFF;
+    background-color: #C72A25;
+}
+#viewPage{
+    //margin-left: 200px;
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-color: #FFF;
+}
+
+#leftSideBar{
+    float:left;
+}
+
+#view-RightPortion{
+    border-style:double;
+    border-color: blue;
+    border-width:3px;
+    width:fit-content;
+    margin-left: 200px;
+    height: 100%;
+    position:static;
+}
