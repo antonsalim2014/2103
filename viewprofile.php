@@ -12,21 +12,25 @@
     </head>
 
     <body>
+
+        <?php
+        include "./phpInclude/header.inc.php";
+        ?>
         <div class="page-container">
             <!-- top navbar -->
-            <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <h3>SIT Booking Facility System</h3>
-                    </div>
-                </div>
-            </div>
-
+            <!--            <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+                            <div class="container">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                    <h3>SIT Booking Facility System</h3>
+                                </div>
+                            </div>
+                        </div>
+            -->
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <!-- sidebar -->
