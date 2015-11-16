@@ -1,16 +1,14 @@
 <?php include '/phpInclude/header.inc.php'; ?>
 <?php
-$emailAdd = trim($_POST['Email']);
+$matricNo = strtolower(trim($_POST['MatricNo']));
 $pass = trim($_POST['Password']);
 // DB connection variable
-$host = "yeoenghuat.database.windows.net";
-$user = "enghuat";
-$pwd = "adminpass1!";
-$db = "sitdatabase";
+
+require_once('protected/config.php');
 
 // Connecting to database
 try {
-    $conn = new PDO( "sqlsrv:Server= $host ; Database = $db ", $user, $pwd);
+    $conn = new PDO( "sqlsrv:Server= ". DBHOST ."; Database = " . DBNAME , DBUSER, DBPASS);
     $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 }
 catch(Exception $e){
@@ -18,7 +16,7 @@ catch(Exception $e){
 }
 
 // SQL command
-$sql_select = "SELECT DISTINCT Email, UserPassword FROM userAccount WHERE Email = '$emailAdd'";
+$sql_select = "SELECT DISTINCT Matriculation_No, UserPassword FROM userAccount WHERE Matriculation_No = '$matricNo'";
 $stmt = $conn->query($sql_select);
 $user = $stmt->fetchAll(); 
 
@@ -27,10 +25,11 @@ header("Location: login.php");
 
 if(count($user) > 0){
     foreach($user as $user1) {
-       if($user1['Email'] == $emailAdd && $user1['UserPassword'] == $pass){ 
+       if(strtolower($user1['Matriculation_No']) == $matricNo && $user1['UserPassword'] == $pass){ 
           // Successful login, redirect to Home.php
 		  header("Location: Home.php");
 	   }
 	}
 }
 ?>
+

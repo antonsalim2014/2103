@@ -30,7 +30,7 @@
                     <div class="account-wall">
                         <h1 class="text-center login-title">Booking System</h1>
                         <form class="form-signin" role="form" action="login-process.php" method="POST">
-                            <input type="text" name="Email" class="form-control" placeholder="Email" required autofocus>
+                            <input type="text" name="MatricNo" class="form-control" placeholder="Matriculation No" required autofocus>
                             <br>
                             <input type="password" name="Password" class="form-control" placeholder="Password" required>
                             <br>
