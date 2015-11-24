@@ -138,6 +138,20 @@ VALUES(7, 'Discussion Room', 'This is a Discussion Room 1', 'SR-01', '0900 - 180
 INSERT INTO facility([FacilityID], [FacilityName], [FacilityDescription], [FacilityLevel], [OperatingHour], [TypeID], [BuildingID])
 VALUES(8, 'Discussion Room', 'This is a Discussion Room 2', 'SR-02', '0900 - 1800', 1, 1);
 
+/*Timing*/
+INSERT INTO timing(time_range) VALUES('08:00-09:00');
+INSERT INTO timing(time_range) VALUES('09:00-10:00');
+INSERT INTO timing(time_range) VALUES('10:00-11:00');
+INSERT INTO timing(time_range) VALUES('11:00-12:00');
+INSERT INTO timing(time_range) VALUES('12:00-13:00');
+INSERT INTO timing(time_range) VALUES('13:00-14:00');
+INSERT INTO timing(time_range) VALUES('14:00-15:00');
+INSERT INTO timing(time_range) VALUES('15:00-16:00');
+INSERT INTO timing(time_range) VALUES('16:00-17:00');
+INSERT INTO timing(time_range) VALUES('17:00-18:00');
+INSERT INTO timing(time_range) VALUES('18:00-19:00');
+INSERT INTO timing(time_range) VALUES('19:00-20:00');
+INSERT INTO timing(time_range) VALUES('20:00-21:00');
 
 /*Booking*/
 INSERT INTO booking ([BookingID], [BookingDate], [StartTime], [EndTime], [FacilityID], [UserID], [StatusCode])

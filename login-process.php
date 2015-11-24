@@ -1,5 +1,6 @@
 <?php include '/phpInclude/header.inc.php'; ?>
 <?php
+session_start();
 $matricNo = strtolower(trim($_POST['MatricNo']));
 $pass = trim($_POST['Password']);
 // DB connection variable
@@ -15,8 +16,8 @@ catch(Exception $e){
     die(var_dump($e));
 }
 
-// SQL command
-$sql_select = "SELECT DISTINCT Matriculation_No, UserPassword FROM userAccount WHERE Matriculation_No = '$matricNo'";
+// SQL command and get data
+$sql_select = "SELECT DISTINCT Matriculation_No, UserPassword, Name FROM userAccount WHERE Matriculation_No = '$matricNo'";
 $stmt = $conn->query($sql_select);
 $user = $stmt->fetchAll(); 
 
@@ -27,9 +28,16 @@ if(count($user) > 0){
     foreach($user as $user1) {
        if(strtolower($user1['Matriculation_No']) == $matricNo && $user1['UserPassword'] == $pass){ 
           // Successful login, redirect to Home.php
-		  header("Location: Home.php");
-	   }
+		  header("Location: index.php");
+          $_SESSION['Login'] = TRUE;
+		  $_SESSION['Name'] = $user1['Name'];
+          $_SESSION['matricNo'] = $matricNo;
+	   }else{
+            session_destroy();
+       }
 	}
+}else{
+    session_destroy();
 }
 ?>
 

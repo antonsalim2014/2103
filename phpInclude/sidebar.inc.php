@@ -11,21 +11,22 @@
                 <span class="icon-bar"></span>
             </button>      
         </div>
-
+		<?php $currentPage = basename($_SERVER['SCRIPT_FILENAME']); ?>
+		
         <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="./home.php">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
+				<li <?php if($currentPage == "viewprofile.php" || $currentPage == "viewbooking.php" || $currentPage == "booking.php") echo 'class="active"' ?> class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b><?php echo $_SESSION['Name']; ?></b><span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
                     <ul class="dropdown-menu forAnimate" role="menu">
-                        <li><a href="./viewprofile.php">Account Details</a></li>
+                        <li <?php if($currentPage == "viewprofile.php") echo 'class="active"' ?>><a href="./viewprofile.php">Account Details</a></li>
                         <li class="divider"></li>
-                        <li><a href="./viewbooking.php">My Booking</a></li>
-                        <li><a href="./home.php">New Booking</a></li>
+                        <li <?php if($currentPage == "viewbooking.php") echo 'class="active"' ?>><a href="./viewbooking.php">My Booking</a></li>
+                        <li <?php if($currentPage == "booking.php") echo 'class="active"' ?>><a href="./booking.php">New Booking</a></li>
                     </ul>
-                </li>          
-                <li ><a href="./viewfacility.php">Facility<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li>        
-                <li ><a href="#">Logout<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-log-out"></span></a></li>
+                </li>
+                <li <?php if($currentPage == "index.php") echo 'class="active"' ?>><a href="./index.php">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>                         
+                <li <?php if($currentPage == "viewfacility.php") echo 'class="active"' ?>><a href="./viewfacility.php">Facility<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li>        
+                <li <?php if($currentPage == "logout.php") echo 'class="active"' ?>><a href="./logout.php">Logout<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-log-out"></span></a></li>
             </ul>
         </div>
     </div>
