@@ -6,7 +6,7 @@
         <link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="bootstrap-3.3.5-dist/css/designTemplate.css" rel="stylesheet"/>
         <link href="bootstrap-3.3.5-dist/css/style.css" rel="stylesheet"/>
-        
+
         <script src="bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
         <link href="bootstrap-3.3.5-dist/css/sidebar.css" rel="stylesheet"/>
         <script type="text/javascript">
@@ -19,63 +19,71 @@
     </head>
 
     <body>
-   <?php
-        include "./phpInclude/header.inc.php";
+		<?php
+			include "./phpInclude/header.inc.php";
         ?>
-        
-        <div class="page-container"> 
-            <!-- top navbar -->
- <!--           <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <h3>SIT Booking Facility System</h3>
-                    </div>
-                </div>
-            </div>
--->
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <!-- sidebar -->
-                    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+                    <div class="col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
                         <?php include '/phpInclude/sidebar.inc.php'; ?>
                     </div>
 
                     <!-- main area -->
-                    <div class="col-xs-12 col-sm-4">
-                        <h3>View Facility</h3>
-                        <div class="col-sm-9">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Facility Type</th>
-                                        <th>Facility Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="searchable">
-                                    <tr class="no-data">
-                                        <td colspan="4">No data</td>
-                                    </tr>
-                                    <tr>
-                                        <td>AP</td>
-                                        <td>Soccer</td>
-                                    </tr>
-                                    <tr>
-                                        <td>AP</td>
-                                        <td>Basketball</td>
-                                    </tr>
-                                    <tr>
-                                        <td>USC</td>
-                                        <td>Badminton</td>
-                                    </tr>
-                                </tbody>
-                            </table>                       
-                        </div>
-                    </div>
+                    <div class="col-xs-12 col-sm-9">
+                        <h1 class="page-header">Our SIT Facilities</h1>
+						<ul class = "media-list">
+							<?php
+								require_once('protected/config.php');
+							// Connecting to database
+								try {
+									$conn = new PDO( "sqlsrv:Server= ". DBHOST ."; Database = " . DBNAME , DBUSER, DBPASS);
+									$conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+								}
+								catch(Exception $e){
+									die(var_dump($e));
+								}
+
+								// SQL command and get data
+								$sql_select = "SELECT FacilityName, OperationHour, FacilityType, BuildingName, BuildingAbbr, ImageLocation FROM FACILITY_INFO ORDER BY FacilityType";
+								$stmt = $conn->query($sql_select);
+								$result = $stmt->fetchAll();
+								if(count($result)>0)
+								{
+									foreach($result AS $eachResult)
+									{
+										echo '<li class = "media thumbnail">
+											<a class = "pull-left" href = "#">
+												<img width="256px" class = "media-object" src = "' . $eachResult['ImageLocation'] . '" alt = "Generic placeholder image">
+											</a>
+										  
+											<div class = "media-body">
+												<br/>
+												<h2 class = "media-heading page-header">' . $eachResult['FacilityName'] . '</h2>
+												
+												<table class="table table-striped">
+													<tbody class="searchable">
+														<tr>
+															<td align="right"><h4>Type :</h4></td>
+															<td align="left"><h4>' . $eachResult['FacilityType'] . '</h4></td>
+														</tr>
+														<tr>
+															<td align="right"><h4>Location :</h4></td>
+															<td align="left"><h4>' . $eachResult['BuildingName'] . ', ' . $eachResult['BuildingAbbr'] . '</h4></td>
+														</tr>
+														<tr>
+															<td align="right"><h4>Operation hours :</h4></td>
+															<td align="left"><h4>' . $eachResult['OperationHour'] . '</h4></td>
+														</tr>
+													</tbody>
+												</table>  
+											</div>
+										</li>';
+									}
+								}
+							?>
+						</ul>
+					</div>
                 </div>
             </div>
         </div>

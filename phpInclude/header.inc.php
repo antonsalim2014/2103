@@ -23,6 +23,6 @@ else
 ?>
 <div class="jumbotron">
 	<div class="container banner-title">
-		<h3>SIT Booking Facility System</h3>
+		<h1 class="navbar-brand" style="color:white;">SIT Booking Facility System</h1>
 	</div>
 </div>

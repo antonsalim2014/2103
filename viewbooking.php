@@ -1,3 +1,6 @@
+<?php
+	require_once('protected/config.php');
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -20,11 +23,11 @@
             $(document).ready(function () {
 
                 $('#date1').datepicker({
-                    format: "dd/mm/yyyy"
+                    format: "yyyy-mm-dd"
                 });
 
                 $('#date2').datepicker({
-                    format: "dd/mm/yyyy"
+                    format: "yyyy-mm-dd"
                 });
 
                 $('.clockpicker').clockpicker();
@@ -32,8 +35,56 @@
                 $('.no-data').show();
 
             });
-        </script>
+			
+			// To populate the facility and types
+			var facilities = [];
+			<?php
+				// Connecting to database
+				try {
+					$conn = new PDO( "sqlsrv:Server= ". DBHOST ."; Database = " . DBNAME , DBUSER, DBPASS);
+					$conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+				}
+				catch(Exception $e){
+					die(var_dump($e));
+				}
 
+				// SQL command and get data
+				$sql_select = "SELECT f.facilityid, f.facilityName, f.typeid, type FROM facility f, facilitytype ft WHERE f.TypeID = ft.TypeID";
+				$stmt = $conn->query($sql_select);
+				$result = $stmt->fetchAll();
+				$ftype = array();
+				$facilityTypes = array();
+				$facilities = array();
+				if(count($result) > 0){
+					foreach($result as $eachresult) {
+						if(!in_array($eachresult['typeid'], $ftype)){
+							array_push($facilityTypes, ['typeid'=>$eachresult['typeid'], 'type'=>$eachresult['type']]);
+							array_push($ftype, $eachresult['typeid']);
+						}
+						array_push($facilities, ['facilityid'=>$eachresult['facilityid'], 'facilityName'=>$eachresult['facilityName'], 'type'=>$eachresult['type'], 'typeid'=>$eachresult['typeid']]);
+					}
+					echo 'facilities = ' . json_encode($facilities) . ';';
+				}
+			?>
+			
+			function facilityTypeonChange()
+			{
+				var type = document.getElementById("facilityType").value;
+				var flty = document.getElementById("facility");
+				flty.options.length = 1; // to remove all elements
+
+				for (x in facilities)
+				{
+					if (facilities[x].typeid == type)
+					{
+						var option = document.createElement("option");
+						option.text = facilities[x].facilityName;
+						option.value = facilities[x].facilityid;
+						flty.add(option);
+					}
+				}
+			}
+        </script>
     </head>
 
     <body>
@@ -51,80 +102,130 @@
 
                     <!-- main area -->
                     <div class="col-xs-12 col-sm-9">
-                        <h3>View Booking</h3>
+                        <h1 class="page-header">View Booking</h1>
+						<form class="form-vertical" role="form" action="viewbooking.php" method="POST">
                         <div class="navview">
-                            <ul class="nav navbar-nav">         
+                            <ul class="nav navbar-nav">          
                                 <li>
-                                    <label>Location: </label>
-                                    <input  type="text" class="form-control" placeholder="">
-                                </li>  
-                                <li>
-                                    <label>Facility Name: </label>
-                                    <select class="form-control" required>
-                                        <option value="one">Indoor</option>
-                                        <option value="two">Outdoor</option>
+                                    <label>Facility Type: </label>
+                                    <select class="form-control" name="facilityType" id="facilityType" onchange="facilityTypeonChange()" required>
+                                        <option value="any">Any</option>
+										<?php
+											if(count($facilityTypes) > 0)
+											{
+												foreach($facilityTypes as $type)
+												{
+													echo '<option value=' . $type['typeid'] . '>' . $type['type'] . '</option>';
+												}
+											}
+										?>
                                     </select>
-                                </li>    
-                                <li >
+                                </li>
+								<li>
+                                    <label>Facility Name: </label>
+                                    <select class="form-control" name="facility" id="facility" required>
+                                        <option value="any">Any</option>
+                                    </select>
+                                </li> 
+                                <li>
                                     <label>Start Date: </label>
                                     <div class="date">
-                                        <input  type="text" class="form-control" placeholder="Start Date"  id="date1">
+                                        <input  type="text" class="form-control" placeholder="Leave blank if any date" name="start_date" id="date1">
                                     </div>
                                 </li>      
-                                <li >
+                                <li>
                                     <label>End Date: </label>
                                     <div class="date">
-                                        <input  type="text" class="form-control" placeholder="End Date"  id="date2">
+                                        <input type="text" class="form-control" placeholder="Leave blank if any date" name="end_date" id="date2">
                                     </div>
                                 </li>      
-                                <li >
+                                <li>
                                     <label>Booking Status: </label>
-                                    <select class="form-control" required>
-                                        <option value="one">Approved</option>
-                                        <option value="two">Rejected</option>
+                                    <select class="form-control" name="bookingStatus" id="bookingStatus" required>
+                                        <option value="any">Any</option>
+										<?php
+											// SQL command and get data
+											$sql_select = "SELECT statuscode, statusname FROM bookingStatus";
+											$stmt = $conn->query($sql_select);
+											$result = $stmt->fetchAll();
+											if(count($result) > 0){
+												foreach($result as $eachresult) {
+													echo '<option value="'. $eachresult['statuscode'] . '">' . $eachresult['statusname'] . '</option>';
+												}
+											}
+										?>
                                     </select>
-                                </li>      
-                            </ul>           
+                                </li>
+								<input type="hidden" name="searchBooking" value="True"/>
+								<li>
+									</br>
+									<div class="form-group">
+											<button type="submit" id="submitBtn" class="btn btn-primary" value="Submit">Search</button>
+									</div>	
+								</li>
+								<li class="divider"></li>								
+                            </ul>  					
                         </div>
+						</form>
                     </div>
-
-
                     <div class="col-sm-9">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Location</th>
                                     <th>Facility Name</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Booking Status</th>
+                                    <th>Facility Type</th>
+                                    <th>Booking Date</th>
+									<th>Booking Time</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody class="searchable">
-                                <tr class="no-data">
-                                    <td colspan="4">No data</td>
-                                </tr>
-                                <tr>
-                                    <td>AP</td>
-                                    <td>Soccer</td>
-                                    <td>14/05/2015</td>
-                                    <td>14/05/2015</td>
-                                    <td>Approved</td>
-                                </tr>
-                                <tr>
-                                    <td>AP</td>
-                                    <td>Basketball</td>
-                                    <td>24/05/2015</td>
-                                    <td>24/05/2015</td>
-                                    <td>Rejected</td>
-                                </tr>
-                                <tr>
-                                    <td>USC</td>
-                                    <td>Badminton</td>
-                                    <td>24/05/2015</td>
-                                    <td>24/05/2015</td>
-                                    <td>Rejected</td>
-                                </tr>
+							<?php
+								$sql_select_condition = "";
+								if(isset($_POST['searchBooking']))
+								{
+									
+									if(isset($_POST['facility']) && isset($_POST['facilityType']) && isset($_POST['start_date']) && isset($_POST['end_date']) && isset($_POST['bookingStatus']) )
+									{
+										
+										if($_POST['facility'] != 'any')
+											$sql_select_condition = $sql_select_condition . " AND bk.FacilityID = '" . $_POST['facility'] . "'";
+										if($_POST['facilityType'] != 'any')
+											$sql_select_condition = $sql_select_condition . " AND ft.TypeID = '" . $_POST['facilityType'] . "'";
+										if($_POST['start_date'] != '' && $_POST['end_date'] != '')
+											$sql_select_condition = $sql_select_condition . " AND bk.BookingDate BETWEEN '" . $_POST['start_date'] . "' AND '" . $_POST['end_date'] . "'";
+										if($_POST['bookingStatus'] != 'any')
+											$sql_select_condition = $sql_select_condition . " AND bk.statusCode = '" . $_POST['bookingStatus'] . "'";	
+									}
+								}
+								// SQL command and get data
+								$sql_select = "SELECT b.BuildingAbbr, f.FacilityName, ft.Type, bk.BookingDate, bk.BookingTime, bs.StatusName
+												FROM Booking bk
+												INNER JOIN Facility f ON f.FacilityID = bk.FacilityID
+												INNER JOIN facilityType ft ON ft.TypeID= f.TypeID
+												INNER JOIN building b ON b.BuildingID = f.BuildingID
+												INNER JOIN bookingStatus bs ON bs.StatusCode = bk.StatusCode
+												WHERE bk.userID = '" . $_SESSION['userID'] . "'" .  $sql_select_condition . " ORDER BY bk.BookingDate DESC";
+								$stmt = $conn->query($sql_select);
+								$result = $stmt->fetchAll();
+								if(count($result) > 0){
+									foreach($result as $eachresult) {
+										echo '<tr>
+												<td>' . $eachresult['BuildingAbbr'] . '</td>
+												<td>' . $eachresult['FacilityName'] . '</td>
+												<td>' . $eachresult['Type'] . '</td>
+												<td>' . $eachresult['BookingDate'] . '</td>
+												<td>' . $eachresult['BookingTime'] . '</td>
+												<td>' . $eachresult['StatusName'] . '</td>
+											</tr>';
+									}
+								}
+								else
+									echo '<tr class="no-data">
+										<td colspan="6">No data</td>
+									</tr>';
+							?>
                             </tbody>
                         </table>                       
                     </div>
