@@ -7,6 +7,7 @@
         <link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="bootstrap-3.3.5-dist/css/IM_CSS.css" rel="stylesheet"/>
         <link href="bootstrap-3.3.5-dist/css/style.css" rel="stylesheet"/>
+		<link href="images/favicon.ico" rel="shortcut icon"/>
         <link href="bootstrap-3.3.5-dist/css/designTemplate.css" rel="stylesheet"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>

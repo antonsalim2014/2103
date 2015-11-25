@@ -6,6 +6,7 @@
         <link href="bootstrap-3.3.5-dist/css/designTemplate.css" rel="stylesheet"/>
         <link href="bootstrap-3.3.5-dist/css/style.css" rel="stylesheet"/>
         <script src="bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
+		<link href="images/favicon.ico" rel="shortcut icon"/>
 
         <link href="bootstrap-3.3.5-dist/css/datepicker.css" rel="stylesheet"/>
         <script src="bootstrap-3.3.5-dist/js/bootstrap-datepicker.js"></script>

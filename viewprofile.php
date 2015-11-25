@@ -6,6 +6,7 @@
         <link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="bootstrap-3.3.5-dist/css/designTemplate.css" rel="stylesheet"/>
         <link href="bootstrap-3.3.5-dist/css/style.css" rel="stylesheet"/>
+		<link href="images/favicon.ico" rel="shortcut icon"/>
 
         <script src="bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
         <link href="bootstrap-3.3.5-dist/css/sidebar.css" rel="stylesheet"/>
