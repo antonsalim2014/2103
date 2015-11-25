@@ -193,7 +193,7 @@
 										if($_POST['facility'] != 'any')
 											$sql_select_condition = $sql_select_condition . " AND bk.FacilityID = '" . $_POST['facility'] . "'";
 										if($_POST['facilityType'] != 'any')
-											$sql_select_condition = $sql_select_condition . " AND ft.TypeID = '" . $_POST['facilityType'] . "'";
+											$sql_select_condition = $sql_select_condition . " AND f.TypeID = '" . $_POST['facilityType'] . "'";
 										if($_POST['start_date'] != '' && $_POST['end_date'] != '')
 											$sql_select_condition = $sql_select_condition . " AND bk.BookingDate BETWEEN '" . $_POST['start_date'] . "' AND '" . $_POST['end_date'] . "'";
 										if($_POST['bookingStatus'] != 'any')

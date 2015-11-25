@@ -30,11 +30,10 @@ CREATE TABLE building(
 CREATE TABLE facility(
 	FacilityID INT,
 	FacilityName VARCHAR(50),
-	FacilityDescription VARCHAR(255),
-	FacilityLevel VARCHAR(50),
 	OperatingHour VARCHAR(50),
 	TypeID INT,
 	BuildingID INT,
+	ImageLocation VARCHAR(MAX),
 	PRIMARY KEY (FacilityID),
 	FOREIGN KEY (TypeID) REFERENCES facilityType ON DELETE NO ACTION,
 	FOREIGN KEY (BuildingID) REFERENCES building ON DELETE CASCADE
@@ -43,13 +42,13 @@ CREATE TABLE facility(
 CREATE TABLE booking(
 	BookingID INT,
 	BookingDate DATE,
-	StartTime TIME,
-	EndTime TIME,
 	FacilityID INT,
 	UserID INT,
 	StatusCode VARCHAR(10),
+	BookingTime VARCHAR(11),
 	PRIMARY KEY (BookingID),
 	FOREIGN KEY (FacilityID) REFERENCES facility,
 	FOREIGN KEY (UserID) REFERENCES userAccount,
-	FOREIGN KEY (StatusCode) REFERENCES bookingStatus
+	FOREIGN KEY (StatusCode) REFERENCES bookingStatus,
+	FOREIGN KEY (BookingTime) REFERENCES timing
 )
