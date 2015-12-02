@@ -16,7 +16,11 @@ try {
     die(var_dump($e));
 }
 
-$sql_select = "SELECT Time_Range FROM timing WHERE Time_Range NOT IN (SELECT BookingTime FROM booking WHERE BookingDate = '" . $_GET['date'] . "' AND FacilityID = '" . $_GET['fid'] . "' AND StatusCode IN ('AC', 'OG'))";
+$sql_select = "SELECT Time_Range FROM timing WHERE Time_Range NOT IN 
+				(SELECT BookingTime FROM booking 
+					WHERE BookingDate = '" . $_GET['date'] . "' 
+					AND FacilityID = '" . $_GET['fid'] . "'
+					AND StatusCode IN ('AC', 'OG'))";
 $stmt = $conn->query($sql_select);
 $timeResults = $stmt->fetchAll();
 $data = [];

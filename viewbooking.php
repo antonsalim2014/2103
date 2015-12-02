@@ -104,7 +104,7 @@
                     <!-- main area -->
                     <div class="col-xs-12 col-sm-9">
                         <h1 class="page-header">View Booking</h1>
-						<form class="form-vertical" role="form" action="viewbooking.php" method="POST">
+						<form class="form-vertical" role="form" action="viewbooking.php" method="GET">
                         <div class="navview">
                             <ul class="nav navbar-nav">          
                                 <li>
@@ -179,29 +179,30 @@
                                     <th>Booking Date</th>
 									<th>Booking Time</th>
                                     <th>Status</th>
+									<th></th>
                                 </tr>
                             </thead>
                             <tbody class="searchable">
 							<?php
 								$sql_select_condition = "";
-								if(isset($_POST['searchBooking']))
+								if(isset($_GET['searchBooking']))
 								{
 									
-									if(isset($_POST['facility']) && isset($_POST['facilityType']) && isset($_POST['start_date']) && isset($_POST['end_date']) && isset($_POST['bookingStatus']) )
+									if(isset($_GET['facility']) && isset($_GET['facilityType']) && isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['bookingStatus']) )
 									{
 										
-										if($_POST['facility'] != 'any')
-											$sql_select_condition = $sql_select_condition . " AND bk.FacilityID = '" . $_POST['facility'] . "'";
-										if($_POST['facilityType'] != 'any')
-											$sql_select_condition = $sql_select_condition . " AND f.TypeID = '" . $_POST['facilityType'] . "'";
-										if($_POST['start_date'] != '' && $_POST['end_date'] != '')
-											$sql_select_condition = $sql_select_condition . " AND bk.BookingDate BETWEEN '" . $_POST['start_date'] . "' AND '" . $_POST['end_date'] . "'";
-										if($_POST['bookingStatus'] != 'any')
-											$sql_select_condition = $sql_select_condition . " AND bk.statusCode = '" . $_POST['bookingStatus'] . "'";	
+										if($_GET['facility'] != 'any')
+											$sql_select_condition = $sql_select_condition . " AND bk.FacilityID = '" . $_GET['facility'] . "'";
+										if($_GET['facilityType'] != 'any')
+											$sql_select_condition = $sql_select_condition . " AND f.TypeID = '" . $_GET['facilityType'] . "'";
+										if($_GET['start_date'] != '' && $_GET['end_date'] != '')
+											$sql_select_condition = $sql_select_condition . " AND bk.BookingDate BETWEEN '" . $_GET['start_date'] . "' AND '" . $_GET['end_date'] . "'";
+										if($_GET['bookingStatus'] != 'any')
+											$sql_select_condition = $sql_select_condition . " AND bk.statusCode = '" . $_GET['bookingStatus'] . "'";	
 									}
 								}
 								// SQL command and get data
-								$sql_select = "SELECT b.BuildingAbbr, f.FacilityName, ft.Type, bk.BookingDate, bk.BookingTime, bs.StatusName
+								$sql_select = "SELECT bk.BookingID, b.BuildingAbbr, f.FacilityName, ft.Type, bk.BookingDate, bk.BookingTime, bs.StatusName
 												FROM Booking bk
 												INNER JOIN Facility f ON f.FacilityID = bk.FacilityID
 												INNER JOIN facilityType ft ON ft.TypeID= f.TypeID
@@ -218,13 +219,17 @@
 												<td>' . $eachresult['Type'] . '</td>
 												<td>' . $eachresult['BookingDate'] . '</td>
 												<td>' . $eachresult['BookingTime'] . '</td>
-												<td>' . $eachresult['StatusName'] . '</td>
-											</tr>';
+												<td>' . $eachresult['StatusName'] . '</td>';
+												if(strtolower($eachresult['StatusName']) == 'active') 
+													echo '<td><a title="Cancel booking" class="btn btn-danger" href="cancel-booking-process.php?bid=' . $eachresult['BookingID'] . '"><span class="glyphicon glyphicon-remove" disabled = "disabled"></span></a></td>';
+												else
+													echo '<td><a title="Cancel booking" class="btn btn-default" style="background:lightgray;" href="#" disabled="disabled"><span class="glyphicon glyphicon-remove" disabled = "disabled"></span></a></td>';
+										echo '</tr>';
 									}
 								}
 								else
 									echo '<tr class="no-data">
-										<td colspan="6">No data</td>
+										<td colspan="7">No data</td>
 									</tr>';
 							?>
                             </tbody>
